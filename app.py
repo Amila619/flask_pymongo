@@ -1,15 +1,16 @@
 from flask import Flask, request, redirect, session
+from flask_session import Session
 from pydantic import ValidationError
 from database import get_db
 from schemas import User
 from datetime import timedelta
-import secrets
 
 app = Flask(__name__)
-
-app.secret_key = secrets.token_hex(32)
 app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_TYPE'] = "filesystem"
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
+
+Session(app)
 
 @app.route("/")
 def root():
